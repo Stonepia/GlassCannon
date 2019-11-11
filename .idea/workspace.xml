@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f9b77328-fd3d-4802-9612-e041f99c8730" name="Default Changelist" comment="" />
+    <list default="true" id="f9b77328-fd3d-4802-9612-e041f99c8730" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/AbstractGameState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/OrderedPlanner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Planner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Task.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PathFinding/AStartBiuBiu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Previous/GlassCannonBK.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/util/Helper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GlassCannon.iml" beforeDir="false" afterPath="$PROJECT_DIR$/GlassCannon.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/GlassCannon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/GlassCannon.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,21 +27,36 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="pHxdLfrS" />
   </component>
   <component name="ProjectId" id="1SVsWtGdEAilIhX4xjqyLBnV807" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../microrts/lib/weka.jar!/" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../tempRead" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.090009004" />
+    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="Previous" />
       <recent name="test" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="GlassCannon" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -75,11 +102,46 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571660131574</updated>
-      <workItem from="1571660134943" duration="350000" />
+      <workItem from="1571660134943" duration="762000" />
+      <workItem from="1571661607267" duration="626000" />
+      <workItem from="1571733138967" duration="199000" />
+      <workItem from="1571741450004" duration="22000" />
+      <workItem from="1571752931835" duration="373000" />
+      <workItem from="1571810432710" duration="631000" />
+      <workItem from="1571815769424" duration="203000" />
+      <workItem from="1571823216400" duration="1879000" />
+      <workItem from="1571913712948" duration="615000" />
+      <workItem from="1572008650444" duration="723000" />
+      <workItem from="1572055205389" duration="17730000" />
     </task>
+    <task id="LOCAL-00001" summary="Add commitment biu">
+      <created>1571753061743</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1571753061744</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add commitment biu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add commitment biu" />
   </component>
 </project>

@@ -5,242 +5,205 @@ import ai.abstraction.AbstractionLayerAI;
 import ai.abstraction.Harvest;
 import ai.abstraction.pathfinding.AStarPathFinding;
 import ai.abstraction.pathfinding.PathFinding;
+import ai.ahtn.domain.Parameter;
 import ai.core.AI;
 import ai.core.ParameterSpecification;
-import rts.GameState;
-import rts.PhysicalGameState;
-import rts.Player;
-import rts.PlayerAction;
+import ai.evaluation.EvaluationFunction;
+import ai.mcts.naivemcts.NaiveMCTS;
+import org.junit.runners.model.InitializationError;
+import rts.*;
 import rts.units.Unit;
 import rts.units.UnitType;
 import rts.units.UnitTypeTable;
+import util.Helper;
+import util.Pair;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GlassCannon extends AbstractionLayerAI {
-    protected UnitTypeTable utt;
-    UnitType workerType;
-    UnitType baseType;
-    UnitType barracksType;
-    UnitType lightType;
-    UnitType rangedType;
+public class GlassCannon extends NaiveMCTS {
+    Deque<PrimitiveTask> currentPlan = null;
+    PrimitiveTask currentTask = null;
 
-    public GlassCannon(UnitTypeTable a_utt) {
-        this(a_utt, new AStarPathFinding());
+    Planner planner = null;
+
+    UnitTypeTable m_utt = null;
+
+    int framesSinceLastUpdate = 0;
+
+    int UPDATE_FREQUENCY = 10;
+    static int TIME = 100;
+    static int MAX_SIMULATION_TIME = 100;
+
+
+    public GlassCannon(UnitTypeTable utt) {
+        super(utt);
     }
 
-    public GlassCannon(UnitTypeTable a_utt, PathFinding a_pf) {
-        super(a_pf);
-        reset(a_utt);
+    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, int max_depth, float e_l, float discout_l, float e_g, float discout_g, float e_0, float discout_0, AI policy, EvaluationFunction a_ef, boolean fensa) {
+        super(available_time, max_playouts, lookahead, max_depth, e_l, discout_l, e_g, discout_g, e_0, discout_0, policy, a_ef, fensa);
+        Initialize(utt);
+    }
+
+    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, int max_depth, float e_l, float e_g, float e_0, AI policy, EvaluationFunction a_ef, boolean fensa) {
+        super(available_time, max_playouts, lookahead, max_depth, e_l, e_g, e_0, policy, a_ef, fensa);
+        Initialize(utt);
+    }
+
+    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, int max_depth, float e_l, float e_g, float e_0, int a_global_strategy, AI policy, EvaluationFunction a_ef, boolean fensa) {
+        super(available_time, max_playouts, lookahead, max_depth, e_l, e_g, e_0, a_global_strategy, policy, a_ef, fensa);
+        Initialize(utt);
+    }
+
+
+    private void Initialize(UnitTypeTable utt) {
+        planner = new OrderedPlanner(utt); // TODO : Implement the Planner
+        currentPlan = new LinkedList<PrimitiveTask>();
+
+        m_utt = utt;
+
+        Helper.BASE_TYPE = utt.getUnitType("Base");
+        Helper.WORKER_TYPE = utt.getUnitType("Worker");
+        Helper.BARRACKS_TYPE = utt.getUnitType("Barracks");
+        Helper.HEAVY_TYPE = utt.getUnitType("Heavy");
+        Helper.LIGHT_TYPE = utt.getUnitType("Light");
+        Helper.RANGED_TYPE = utt.getUnitType("Ranged");
+        Helper.RESOURCE_TYPE = utt.getUnitType("Resource");
     }
 
     public void reset() {
+        currentPlan.clear();
+        Helper.reset();
         super.reset();
-    }
-
-    public void reset(UnitTypeTable a_utt) {
-        utt = a_utt;
-        workerType = utt.getUnitType("Worker");
-        baseType = utt.getUnitType("Base");
-        barracksType = utt.getUnitType("Barracks");
-        lightType = utt.getUnitType("Light");
-        rangedType = utt.getUnitType("Ranged");
     }
 
     @Override
     public PlayerAction getAction(int player, GameState gs) throws Exception {
-        PhysicalGameState pgs = gs.getPhysicalGameState();
-        Player p = gs.getPlayer(player);
-
-        //behaviour of bases:
-        for (Unit u : pgs.getUnits()) {
-            if (u.getType() == baseType &&
-                    u.getPlayer() == player &&
-                    gs.getActionAssignment(u) == null)
-                baseBehavior(u, p, pgs);
+        if (gs.getTime() == 0) {
+            Planner.INSTANCE.player = player;
+            Helper.reset();
         }
 
-        //behaviour of workers:
-        List<Unit> workers = new LinkedList<Unit>();
-        for (Unit u : pgs.getUnits()){
-            if (u.getType().canHarvest && u.getPlayer()==player){
-                workers.add(u);
+        //long time = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
+        planner.time = startTime;
+        framesSinceLastUpdate++;
+
+        // TODO : This place can be distribute time between different Algorithms
+        // Original Function uses HTM and MCTS
+        if (!gs.canExecuteAnyAction(player) && framesSinceLastUpdate >= UPDATE_FREQUENCY) {
+            Helper.UpdateGameStateStatistics(gs);
+            framesSinceLastUpdate = 0;
+            return super.getAction(player, gs);
+        }
+
+        boolean decisionMade = false;
+        boolean replan = false;
+
+        AbstractGameState ags = new AbstractGameState(gs);
+
+        if (currentTask != null) {
+            if (currentTask.IsReached(player, 1 - player, gs)) {
+                // DO nothing
+            } else if (currentTask.CheckPreconditions(ags)) {
+                decisionMade = true;
+            } else {
+                replan = true;
             }
         }
 
-        workersBehavior(workers,p,pgs,gs);
-        //behaviour of melee units:
-        for (Unit u : pgs.getUnits()) {
-            if (u.getType().canAttack && !u.getType().canHarvest
-                    && u.getPlayer() == player
-                    && gs.getActionAssignment(u) == null)
-                meleeUnitBehavior(u, p, gs);
-        }
+        // Replan
+        while (!decisionMade) {
+            long curTime = System.currentTimeMillis();
 
-
-        //behaviour of barracks:
-        for (Unit u : pgs.getUnits()) {
-            if (u.getType() == barracksType &&
-                    u.getPlayer() == player &&
-                    gs.getActionAssignment(u) == null)
-                barracksBehavior(u, p, pgs);
-        }
-        // This method takes all the unit actions executed so far, and packages them into a PlayerAction
-        return translateActions(player,gs);
-    }
-
-    private void meleeUnitBehavior(Unit u, Player p, GameState gs) {
-        PhysicalGameState pgs = gs.getPhysicalGameState();
-        Unit closestEnemy = null;
-        int closestDistance = 0;
-        int mybase = 0;
-        for (Unit u2: pgs.getUnits()){
-            if (u2.getPlayer() >=0 && u2.getPlayer() != p.getID()){
-                int d = Math.abs(u2.getX() - u.getX()) + Math.abs(u2.getY() - u.getY()); // TODO: Maybe use another distance measurement?
-                if (closestEnemy == null || d< closestDistance){
-                    closestDistance = d;
-                    closestEnemy = u2;
+            if (curTime - startTime >= Helper.MAX_TIME_FOR_PLANNER) {
+                if (Helper.DEBUG_ACTION_EXECUTION) {
+                    System.out.println("No time for HTN - Try MCTS");
                 }
+                return super.getAction(player, gs);
             }
-            else if (u2.getPlayer() == p.getID() && u2.getType() ==baseType)
-                mybase = Math.abs(u2.getX() - u.getX()) + Math.abs(u2.getY() - u.getY());
 
-        }
-        // TODO : Instead of attacking closest enemy, attack the ranged enemy
-        if (closestEnemy !=null && (closestDistance < pgs.getHeight() /2 || mybase < pgs.getHeight()/2)){
-            attack(u,closestEnemy);
-        }
-        else{
-            attack(u,null);
-        }
-    }
-
-    private void baseBehavior(Unit u, Player p, PhysicalGameState pgs) {
-        int nworkers = 0;
-        for (Unit u2 : pgs.getUnits()){
-            if(u2.getType() == workerType
-                    && u2.getPlayer() == p.getID()){
-                nworkers++;
+            // Create plan
+            if (currentPlan.isEmpty() || replan) {
+                currentPlan = planner.CreatePlan(player, gs);
             }
-        }
-        // TODO : If the enemy has more worker, train
-        if (nworkers < 5 && p.getResources() >= workerType.cost){
-            train(u,workerType);
-        }
-    }
-    private void barracksBehavior(Unit u, Player p, PhysicalGameState pgs) {
-        if (p.getResources() >= rangedType.cost)
-            train(u,rangedType);
 
-    }
-    private void workersBehavior(List<Unit> workers, Player p, PhysicalGameState pgs, GameState gs) {
-        int nbases = 0;
-        int nbarracks = 0;
+            // Get Next plan task
+            if (!currentPlan.isEmpty()) {
+                currentTask = currentPlan.removeFirst();
 
-        int resourcesUsed = 0;
-
-        //Unit harvestWorker = null;
-        List<Unit> harvestWorkers = new LinkedList<>();
-
-        List<Unit> freeWorkers = new LinkedList<Unit>();
-        freeWorkers.addAll(workers);
-
-        if (workers.isEmpty())
-            return;
-
-        for (Unit u2 : pgs.getUnits()){
-            if (u2.getType() == baseType && u2.getPlayer()==p.getID())
-            {
-                nbases++;
-            }
-            if (u2.getType() == barracksType && u2.getPlayer() ==p.getID())
-            {
-                nbarracks++;
-            }
-        }
-
-        List<Integer> reservedPositions = new LinkedList<Integer>();
-        if (nbases == 0 && !freeWorkers.isEmpty()){
-            if (p.getResources() >=baseType.cost + resourcesUsed){
-                Unit u = freeWorkers.remove(0);
-                buildIfNotAlreadyBuilding(u,baseType,u.getX()+1,u.getY()+1, reservedPositions,p,pgs);
-                resourcesUsed += baseType.cost;
-            }
-        }
-
-
-        // Harvest
-        // TODO : Now is harvest with all the free workers, maybe harvest with some worker, and others to defend?
-
-        if (freeWorkers.size() > 0)
-        {
-            harvestWorkers.add(freeWorkers.remove(0));
-        }
-        if (freeWorkers.size() > 0 && harvestWorkers.size() <2 && nbarracks>0){
-            harvestWorkers.add(freeWorkers.remove(0));
-        }
-
-        for (Unit u : harvestWorkers){
-            Unit closestBase = null;
-            Unit closestResource = null;
-            int closestDistance = 0;
-            for (Unit u2 : pgs.getUnits()) {
-                if (u2.getType().isResource) {
-                    int d = Math.abs(u2.getX() - u.getX()) + Math.abs(u2.getY() - u.getY());
-                    if (closestResource == null || d < closestDistance) {
-                        closestResource = u2;
-                        closestDistance = d;
+                boolean holds = currentTask.CheckPreconditions(ags);
+                // It is applicable or we don't have enough time to re-plan
+                if (holds || curTime - startTime >= Helper.MAX_TIME_FOR_PLANNER) {
+                    this.setEvaluationFunction(currentTask.GetTaskEF());
+                    if (Helper.DEBUG_ACTION_EXECUTION) {
+                        System.out.println("Evaluation Function : " + this.ef.toString());
                     }
+                    decisionMade = true;
                 }
-            }
-            closestDistance = 0;
-            for (Unit u2 : pgs.getUnits()) {
-                if (u2.getType().isStockpile && u2.getPlayer()==p.getID()) {
-                    int d = Math.abs(u2.getX() - u.getX()) + Math.abs(u2.getY() - u.getY());
-                    if (closestBase == null || d < closestDistance) {
-                        closestBase = u2;
-                        closestDistance = d;
+                if (!holds) {
+                    if (Helper.DEBUG_ACTION_EXECUTION) {
+                        System.out.println("Task : " + currentTask.taskName + "not holds, re planning");
                     }
+                    currentPlan.clear();
                 }
             }
-            if (closestResource != null && closestBase != null) {
-                AbstractAction aa = getAbstractAction(u);
-                if (aa instanceof Harvest) {
-                    Harvest h_aa = (Harvest)aa;
-                    if (h_aa.getTarget() != closestResource || h_aa.getBase()!=closestBase) harvest(u, closestResource, closestBase);
-                } else {
-                    harvest(u, closestResource, closestBase);
+        }
+        long endTime = System.currentTimeMillis();
+        long timeSpent = (endTime - startTime);
+
+        // TODO : ??? WHY??
+        TIME_BUDGET = (int) Math.max(1, (TIME - timeSpent - 5));
+
+        PlayerAction action = super.getAction(player, gs);
+
+        if (Helper.CURRENT_NUM_WORKDERS == 0
+                && gs.canExecuteAnyAction(player) && Helper.CURRENT_NUM_MELEE == 0
+                && gs.getPlayer(Planner.INSTANCE.player).getResources() != 0 && Helper.MY_BASES.isEmpty()
+                && gs.getTime() <= 10) {
+            Unit base = gs.getPhysicalGameState().getUnit(Helper.MY_BASES.keySet().iterator().next());
+
+            if (action.getAction(base) == null) {
+                PlayerAction alternativeAction = GetProducerAction(gs);
+                if (alternativeAction != null) {
+                    return alternativeAction;
+                }
+            }
+        }
+        return action;
+
+    }
+
+    public PlayerAction GetProducerAction(GameState gs) {
+        Unit base = gs.getPhysicalGameState().getUnit(Helper.MY_BASES.keySet().iterator().next());
+        List<PlayerAction> children = super.tree.actions;
+
+        for (PlayerAction pa : children) {
+            for (Pair<Unit, UnitAction> uaa : pa.getActions()) {
+                if (uaa.m_a.getID() == base.getID() && uaa.m_b.getType() == UnitAction.TYPE_PRODUCE
+                        && uaa.m_b.getUnitType() == Helper.WORKER_TYPE) {
+                    return pa;
                 }
             }
         }
 
-        if (nbarracks == 0 && freeWorkers.size() > 3){
-            // TODO : when to build?
-            // build a barracks
-            if ((p.getResources() >= barracksType.cost + resourcesUsed )
-                    && freeWorkers.size() > 0){
-                Unit u = freeWorkers.remove(freeWorkers.size()-1);
-                buildIfNotAlreadyBuilding(u,barracksType,u.getX(),u.getY(), reservedPositions,p,pgs);
-                resourcesUsed += barracksType.cost;
-
-            }
-        }
-        // System.out.println(freeWorkers.size());
-        for (Unit u : freeWorkers) meleeUnitBehavior(u,p,gs);
-
+        return null;
     }
 
     @Override
     public AI clone() {
-        return new GlassCannon(utt, pf);
+        return new GlassCannon(m_utt, TIME_BUDGET, ITERATIONS_BUDGET, MAXSIMULATIONTIME, MAX_TREE_DEPTH, epsilon_l, discount_l,
+                epsilon_g, discount_g, epsilon_0, discount_0, playoutPolicy, ef,
+                forceExplorationOfNonSampledActions);
     }
 
     @Override
     public List<ParameterSpecification> getParameters() {
-        List<ParameterSpecification> parameters = new ArrayList<>();
-        parameters.add(new ParameterSpecification("PathFinding", PathFinding.class, new AStarPathFinding()));
-        return parameters;
+        return super.getParameters();
     }
+
+
+
 }
