@@ -2,17 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f9b77328-fd3d-4802-9612-e041f99c8730" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/AbstractGameState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/OrderedPlanner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Planner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Task.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PathFinding/AStartBiuBiu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Previous/GlassCannonBK.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/util/Helper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/CompoundTasks/CompoundTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/CompoundTasks/c_Act.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleBigMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleMidsizeMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleSmallMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/MethodstoTake.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GlassCannon.iml" beforeDir="false" afterPath="$PROJECT_DIR$/GlassCannon.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/AbstractGameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/AbstractGameState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GlassCannon/GlassCannon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/GlassCannon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/Planner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/Planner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Helper.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,13 +43,14 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../tempRead" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Hybrid-HTN-MCTS-Planner-bot" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.090009004" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -56,6 +58,7 @@
       <recent name="test" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="Methods" />
       <recent name="GlassCannon" />
     </key>
   </component>
@@ -113,6 +116,12 @@
       <workItem from="1571913712948" duration="615000" />
       <workItem from="1572008650444" duration="723000" />
       <workItem from="1572055205389" duration="17730000" />
+      <workItem from="1573524431463" duration="416000" />
+      <workItem from="1573524940025" duration="364000" />
+      <workItem from="1573782279384" duration="1525000" />
+      <workItem from="1573784964068" duration="4325000" />
+      <workItem from="1573796715913" duration="2556000" />
+      <workItem from="1573807372147" duration="6871000" />
     </task>
     <task id="LOCAL-00001" summary="Add commitment biu">
       <created>1571753061743</created>

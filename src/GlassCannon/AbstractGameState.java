@@ -1,6 +1,6 @@
 package GlassCannon;
 
-import org.jetbrains.annotations.Contract;
+//import org.jetbrains.annotations.Contract;
 import rts.GameState;
 import util.Helper;
 
@@ -22,7 +22,7 @@ public class AbstractGameState {
         oppUnitReachable = Helper.OPP_UNIT_REACHABLE;
 
         currentNumResources = Helper.CURRENT_NUM_RESOURCES;
-        currentNumWorkers = Helper.CURRENT_NUM_WORKDERS;
+        currentNumWorkers = Helper.CURRENT_NUM_WORKERS;
         currentNumBases = Helper.CURRENT_NUM_BASES;
         currentNumBarracks = Helper.CURRENT_NUM_BARRACKS;
         currentNumMelee = Helper.CURRENT_NUM_MELEE;

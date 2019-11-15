@@ -91,8 +91,9 @@ public class GlassCannon extends NaiveMCTS {
         planner.time = startTime;
         framesSinceLastUpdate++;
 
-        // TODO : This place can be distribute time between different Algorithms
-        // Original Function uses HTM and MCTS
+        // TODO : This place can distribute time between different Algorithms
+        // TODO : Distribute time between HTN and MCTS
+        // Original Function uses HTN and MCTS
         if (!gs.canExecuteAnyAction(player) && framesSinceLastUpdate >= UPDATE_FREQUENCY) {
             Helper.UpdateGameStateStatistics(gs);
             framesSinceLastUpdate = 0;
@@ -154,12 +155,11 @@ public class GlassCannon extends NaiveMCTS {
         long endTime = System.currentTimeMillis();
         long timeSpent = (endTime - startTime);
 
-        // TODO : ??? WHY??
         TIME_BUDGET = (int) Math.max(1, (TIME - timeSpent - 5));
 
         PlayerAction action = super.getAction(player, gs);
 
-        if (Helper.CURRENT_NUM_WORKDERS == 0
+        if (Helper.CURRENT_NUM_WORKERS == 0
                 && gs.canExecuteAnyAction(player) && Helper.CURRENT_NUM_MELEE == 0
                 && gs.getPlayer(Planner.INSTANCE.player).getResources() != 0 && Helper.MY_BASES.isEmpty()
                 && gs.getTime() <= 10) {
