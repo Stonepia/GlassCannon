@@ -1,9 +1,9 @@
 package GlassCannon.Methods;
 
 import GlassCannon.AbstractGameState;
-import GlassCannon.MethodstoTake;
+import GlassCannon.MethodsToTake;
 
-public class m_handleBigMap extends MethodstoTake {
+public class m_handleBigMap extends MethodsToTake {
     @Override
     public boolean CheckPreconditions(AbstractGameState currentGameState) {
         return false;

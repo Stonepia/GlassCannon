@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public abstract class MethodstoTake {
+public abstract class MethodsToTake {
     public PlayerAction myAct;
     public String methodName;
     protected ArrayList<Task> tasksToDecompose;
@@ -17,13 +17,12 @@ public abstract class MethodstoTake {
 
     public abstract boolean CheckPreconditions(AbstractGameState currentGameState);
 
-    public MethodstoTake() {tasksToDecompose = new ArrayList<Task>();}
+    public MethodsToTake() {tasksToDecompose = new ArrayList<Task>();}
 
     public void PrintAllUCBValuesOfMethod(PrintWriter pw){
         if (this.tasksToDecompose.size()==0){
             return;
         }
-       //TODO : Use Iterator
         for (int i =0; i<this.tasksToDecompose.size();++i){
             if (this.tasksToDecompose.get(i).getClass().getSimpleName().contains("p_")){
                 continue;

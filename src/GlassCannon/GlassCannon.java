@@ -1,5 +1,6 @@
 package GlassCannon;
 
+import ai.RandomBiasedAI;
 import ai.abstraction.AbstractAction;
 import ai.abstraction.AbstractionLayerAI;
 import ai.abstraction.Harvest;
@@ -15,13 +16,11 @@ import rts.*;
 import rts.units.Unit;
 import rts.units.UnitType;
 import rts.units.UnitTypeTable;
+import test.CollectEF;
 import util.Helper;
 import util.Pair;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GlassCannon extends NaiveMCTS {
     Deque<PrimitiveTask> currentPlan = null;
@@ -39,27 +38,39 @@ public class GlassCannon extends NaiveMCTS {
 
 
     public GlassCannon(UnitTypeTable utt) {
-        super(utt);
+        this(utt,TIME, -1,MAX_SIMULATION_TIME, 100,0.33f,0.0f, 0.75f,
+                new RandomBiasedAI(),new CollectEF(),true);
+
     }
 
-    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, int max_depth, float e_l, float discout_l, float e_g, float discout_g, float e_0, float discout_0, AI policy, EvaluationFunction a_ef, boolean fensa) {
-        super(available_time, max_playouts, lookahead, max_depth, e_l, discout_l, e_g, discout_g, e_0, discout_0, policy, a_ef, fensa);
+
+    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, 
+                       int max_depth, float e_l, float discount_l, float e_g, 
+                       float discount_g, float e_0, float discount_0, 
+                       AI policy, EvaluationFunction a_ef, boolean fensa) {
+        super(available_time, max_playouts, lookahead, max_depth, e_l, 
+                discount_l, e_g, discount_g, e_0, discount_0, policy, a_ef, fensa);
         Initialize(utt);
     }
 
-    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, int max_depth, float e_l, float e_g, float e_0, AI policy, EvaluationFunction a_ef, boolean fensa) {
+    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, 
+                       int max_depth, float e_l, float e_g, float e_0, 
+                       AI policy, EvaluationFunction a_ef, boolean fensa) {
         super(available_time, max_playouts, lookahead, max_depth, e_l, e_g, e_0, policy, a_ef, fensa);
         Initialize(utt);
     }
 
-    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, int max_depth, float e_l, float e_g, float e_0, int a_global_strategy, AI policy, EvaluationFunction a_ef, boolean fensa) {
-        super(available_time, max_playouts, lookahead, max_depth, e_l, e_g, e_0, a_global_strategy, policy, a_ef, fensa);
+    public GlassCannon(UnitTypeTable utt, int available_time, int max_playouts, int lookahead, 
+                       int max_depth, float e_l, float e_g, float e_0, int a_global_strategy,
+                       AI policy, EvaluationFunction a_ef, boolean fensa) {
+        super(available_time, max_playouts, lookahead, max_depth, e_l, e_g, e_0, 
+                a_global_strategy, policy, a_ef, fensa);
         Initialize(utt);
     }
 
 
     private void Initialize(UnitTypeTable utt) {
-        planner = new OrderedPlanner(utt); // TODO : Implement the Planner
+        planner = new OrderedPlanner(utt);
         currentPlan = new LinkedList<PrimitiveTask>();
 
         m_utt = utt;
@@ -91,6 +102,9 @@ public class GlassCannon extends NaiveMCTS {
         planner.time = startTime;
         framesSinceLastUpdate++;
 
+        if (Helper.OBSERVABLE == 0){
+            Helper.UpdateGameStateStatistics(gs);
+        }
         // TODO : This place can distribute time between different Algorithms
         // TODO : Distribute time between HTN and MCTS
         // Original Function uses HTN and MCTS
@@ -160,8 +174,10 @@ public class GlassCannon extends NaiveMCTS {
         PlayerAction action = super.getAction(player, gs);
 
         if (Helper.CURRENT_NUM_WORKERS == 0
-                && gs.canExecuteAnyAction(player) && Helper.CURRENT_NUM_MELEE == 0
-                && gs.getPlayer(Planner.INSTANCE.player).getResources() != 0 && Helper.MY_BASES.isEmpty()
+                && gs.canExecuteAnyAction(player)
+                && Helper.CURRENT_NUM_MELEE == 0
+                && gs.getPlayer(Planner.INSTANCE.player).getResources() != 0
+                && !Helper.MY_BASES.isEmpty()
                 && gs.getTime() <= 10) {
             Unit base = gs.getPhysicalGameState().getUnit(Helper.MY_BASES.keySet().iterator().next());
 

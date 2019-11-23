@@ -3,7 +3,7 @@ package GlassCannon.CompoundTasks;
 import GlassCannon.AbstractGameState;
 import GlassCannon.Planner;
 import GlassCannon.Task;
-import GlassCannon.MethodstoTake;
+import GlassCannon.MethodsToTake;
 import ai.evaluation.EvaluationFunction;
 import rts.GameState;
 import util.Helper;
@@ -14,7 +14,7 @@ import java.util.LinkedList;
 
 public abstract class CompoundTask extends Task {
 
-    public ArrayList<MethodstoTake> methods;
+    public ArrayList<MethodsToTake> methods;
 
     protected int indMethodSelected;
     protected float prevMethodsReward;
@@ -23,7 +23,7 @@ public abstract class CompoundTask extends Task {
 
     private int prevPlanLength = 0;
 
-    public CompoundTask() {this.methods = new ArrayList<MethodstoTake>();}
+    public CompoundTask() {this.methods = new ArrayList<MethodsToTake>();}
 
     public abstract  void SetUCBValues(String[] values);
 
@@ -41,7 +41,7 @@ public abstract class CompoundTask extends Task {
         //select a method depending on preconditions and selection mechanism
         int methodIndex = -1;
         int[] methodsTried = new int[this.methods.size()];
-        MethodstoTake toDecompose = null;
+        MethodsToTake toDecompose = null;
 
         toDecompose = Planner.INSTANCE.SelectNextMethod(this,toChangeGameState,methodIndex,methodsTried);
 

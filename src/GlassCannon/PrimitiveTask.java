@@ -7,8 +7,8 @@ import util.Helper;
 
 import java.util.LinkedList;
 
-public class PrimitiveTask extends Task {
-
+public abstract class PrimitiveTask extends Task {
+    protected EvaluationFunction taskEF;
 
     @Override
     public AbstractGameState Decompose(AbstractGameState gameState, LinkedList<Task> prevTasks) {
@@ -24,7 +24,7 @@ public class PrimitiveTask extends Task {
         return Simulate(prevGameState);
     }
 
-    private AbstractGameState Simulate(AbstractGameState prevGameState) {
+    protected AbstractGameState Simulate(AbstractGameState prevGameState) {
         AbstractGameState toChangeGameState = prevGameState.clone();
         Planner.INSTANCE.AddPlanStep(this);
         return toChangeGameState;
@@ -64,15 +64,23 @@ public class PrimitiveTask extends Task {
     }
 
     @Override
-    public boolean IsReached(int player, int i, GameState gs) {
-        // TODO : Implement this
-        return false;
+    public boolean IsReached(int maxplayer, int minplayer, GameState currentGameState) {
+        boolean reached = false;
+
+        float currentVal = taskEF.evaluate(maxplayer, minplayer, currentGameState);
+        float upperVal = 0.8f * taskEF.upperBound(currentGameState);
+
+        reached = currentVal >= upperVal;
+
+        if (reached && Helper.DEBUG_POSTCONDITIONS) {
+            System.out.println(this.taskName + " reached");
+        }
+        return reached;
     }
 
     @Override
     public EvaluationFunction GetTaskEF() {
-        // TODO : Implement Evaluation Function
-        return null;
+        return taskEF;
     }
 
 
