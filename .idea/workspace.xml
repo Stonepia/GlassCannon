@@ -2,17 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f9b77328-fd3d-4802-9612-e041f99c8730" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/AbstractGameState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/OrderedPlanner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Planner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Task.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PathFinding/AStartBiuBiu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Previous/GlassCannonBK.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/util/Helper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/CompoundTasks/c_EndGame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/CompoundTasks/c_SmallMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Methods/m_AttackSmall.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/Methods/m_EndGame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks/EvaluationFunctions/AttackAllEF.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks/EvaluationFunctions/AttackMilitaryEF.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks/EvaluationFunctions/BuildAndDefendEF.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks/EvaluationFunctions/BuildRangedAndDefendEF.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks/EvaluationFunctions/CollectEF.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks/EvaluationFunctions/PreventAttackAllEF.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks/EvaluationFunctions/PreventAttackMilitaryEF.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks/p_AttackAllSmall.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PathFinding/SimpleFloodFill.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/CollectEF.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GlassCannon.iml" beforeDir="false" afterPath="$PROJECT_DIR$/GlassCannon.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GlassCannon/META-INF/GlassCannon.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/AbstractGameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/AbstractGameState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/CompoundTasks/CompoundTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/CompoundTasks/CompoundTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GlassCannon/GlassCannon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/GlassCannon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleBigMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleBigMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleMidsizeMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleMidsizeMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleSmallMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/Methods/m_handleSmallMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/MethodstoTake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/MethodsToTake.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/OrderedPlanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/OrderedPlanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/Planner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/Planner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GlassCannon/PrimitiveTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/GameVisualSimulationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/GameVisualSimulationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Helper.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,6 +45,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MacroExpansionManager">
@@ -42,20 +64,28 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../tempRead" />
+    <property name="ignore.virus.scanning.warn.message" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/GlassCannon/PrimitiveTasks" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.090009004" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\wsuto\Documents\microRTS\GlassCannon\src\GlassCannon\PrimitiveTasks" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="Previous" />
       <recent name="test" />
+      <recent name="PathFinding" />
+      <recent name="Previous" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="Methods" />
+      <recent name="GlassCannon.CompoundTasks" />
       <recent name="GlassCannon" />
     </key>
   </component>
@@ -92,6 +122,9 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value=",SHOW_INTERFACES,ALPHA_COMPARATOR,SHOW_FIELDS" />
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -113,6 +146,19 @@
       <workItem from="1571913712948" duration="615000" />
       <workItem from="1572008650444" duration="723000" />
       <workItem from="1572055205389" duration="17730000" />
+      <workItem from="1573524431463" duration="416000" />
+      <workItem from="1573524940025" duration="364000" />
+      <workItem from="1573782279384" duration="1525000" />
+      <workItem from="1573784964068" duration="4325000" />
+      <workItem from="1573796715913" duration="2556000" />
+      <workItem from="1573807372147" duration="6871000" />
+      <workItem from="1573880776204" duration="18300000" />
+      <workItem from="1574319860340" duration="1107000" />
+      <workItem from="1574321026957" duration="6824000" />
+      <workItem from="1574344549078" duration="7898000" />
+      <workItem from="1574424103096" duration="913000" />
+      <workItem from="1574475060857" duration="7443000" />
+      <workItem from="1574491247518" duration="581000" />
     </task>
     <task id="LOCAL-00001" summary="Add commitment biu">
       <created>1571753061743</created>
